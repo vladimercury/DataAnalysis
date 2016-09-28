@@ -1,5 +1,3 @@
-import copy
-
 class Dataset:
     def __init__(self, new_data=[]):
         self.data = new_data

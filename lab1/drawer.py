@@ -47,6 +47,16 @@ class Drawer:
         pl.plot([-lim, lim], [0, 0], color='black')
 
     @staticmethod
+    def draw_color_mesh(mesh, mesh_labels, colors=None):
+        import numpy as np
+        if colors is not None:
+            colors = ListedColormap(colors)
+        pl.pcolormesh(mesh[0],
+                      mesh[1],
+                      np.asarray(mesh_labels).reshape(mesh[0].shape),
+                      cmap=colors)
+
+    @staticmethod
     def limits(lim):
         pl.xlim(lim[0])
         pl.ylim(lim[1])
