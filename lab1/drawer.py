@@ -38,23 +38,14 @@ class Drawer:
 
     @staticmethod
     def draw_polar_grid():
-        lim = 1.5
-        pl.gca().add_patch(pl.Circle((0, 0), 1, color='black', fill=None))
-        pl.gca().add_patch(pl.Circle((0, 0), 0.5, color='black', fill=None))
+        lim = 1.0
+        import numpy as np
+        for i in np.arange(0, 1.2, 0.1):
+            pl.gca().add_patch(pl.Circle((0, 0), i, color='black', fill=None))
         pl.plot([-lim, lim], [-lim, lim], color='black')
         pl.plot([-lim, lim], [lim, -lim], color='black')
         pl.plot([0, 0], [-lim, lim], color='black')
         pl.plot([-lim, lim], [0, 0], color='black')
-
-    @staticmethod
-    def draw_color_mesh(mesh, mesh_labels, colors=None):
-        import numpy as np
-        if colors is not None:
-            colors = ListedColormap(colors)
-        pl.pcolormesh(mesh[0],
-                      mesh[1],
-                      np.asarray(mesh_labels).reshape(mesh[0].shape),
-                      cmap=colors)
 
     @staticmethod
     def limits(lim):

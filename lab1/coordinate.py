@@ -4,7 +4,7 @@ import math
 class Coordinate:
     @staticmethod
     def get_center(dataset):
-        dots = dataset.get_dots()
+        dots = [x[0] for x in dataset]
         n = len(dots)
         x = sum([i[0] for i in dots]) / n
         y = sum([i[1] for i in dots]) / n

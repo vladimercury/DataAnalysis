@@ -5,7 +5,7 @@ class Classifier:
     @staticmethod
     def classify_knn(train_data, test_data, k, n_classes):
         def dist_pp(a, b):
-            return math.fabs(a[0] - b[0])
+            return math.fabs(a[0]-b[0])
 
         def dist_p(a, b):
             return math.sqrt(a[0]**2 + b[0]**2 - 2 * a[0] * b[0] * math.cos(b[1] - a[1]))
@@ -41,24 +41,13 @@ class Classifier:
         return sum([int(labels[i]==tests[i][1]) for i in range(len(tests))]) / float(len(tests))
 
     @staticmethod
-    def generate_mesh(train):
-        import numpy as np
-        x_min = min([train[i][0][0] for i in range(len(train))]) - 1.0
-        x_max = max([train[i][0][0] for i in range(len(train))]) + 1.0
-        y_min = min([train[i][0][1] for i in range(len(train))]) - 1.0
-        y_max = max([train[i][0][1] for i in range(len(train))]) + 1.0
-        h = 0.05
-        testX, testY = np.meshgrid(np.arange(x_min, x_max, h),
-                                   np.arange(y_min, y_max, h))
-        return [testX, testY]
-
-    @staticmethod
-    def get_mesh(train, k, n_classes):
-        from lab1.coordinate import Coordinate
-        test_mesh = Classifier.generate_mesh(train.data)
-        mesh_labels = Classifier.classify_knn(train.data,
-                                              Coordinate.to_polar([[[x[0], x[1]], 0] for x in zip(test_mesh[0].ravel(), test_mesh[1].ravel())]),
-                                              k,
-                                              n_classes)
-        return mesh_labels, test_mesh
+    def recall_precision(labels, tests, class_n):
+        tp = sum([int(labels[i] == class_n and tests[i][1] == class_n) for i in range(len(tests))])
+        fp = sum([int(labels[i] == class_n and tests[i][1] != class_n) for i in range(len(tests))])
+        tn = sum([int(labels[i] != class_n and tests[i][1] == class_n) for i in range(len(tests))])
+        fn = sum([int(labels[i] != class_n and tests[i][1] != class_n) for i in range(len(tests))])
+        recall = tp / (tp + fn) if tp + fn != 0 else 0
+        precision = tp / (tp + fp) if tp + fp != 0 else 0
+        f1 = 2 * precision * recall / (precision + recall) if precision + recall != 0 else 0
+        return f1, recall, precision
 

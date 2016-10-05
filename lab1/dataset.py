@@ -16,9 +16,6 @@ class Dataset:
     def get_data(self):
         return self.data
 
-    def get_dots(self):
-        return [x[0] for x in self.data]
-
     def print_data(self):
         [print(str(x[1]) + ": " + str(x[0])) for x in self.data]
 
