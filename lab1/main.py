@@ -22,7 +22,6 @@ Drawer.draw_dataset_polar(dataset, ['red', 'blue'])
 Drawer.limits([[-1.0, 1.0], [-1.0, 1.0]])
 Drawer.show_all()
 '''
-
 # 4 shuffle
 dataset.shuffle()
 
@@ -30,14 +29,17 @@ folds = 5
 k = 3
 classes = 2
 
-res_acc = [[0] * 10 for i in range(10)]
-res_f1 = [[0] * 10 for i in range(10)]
-res_sum = [[0] * 10 for i in range(10)]
-res_recall = [[0] * 10 for i in range(10)]
-res_precision = [[0] * 10 for i in range(10)]
+max_folds = 10
+max_k = 20
 
-for folds in range(2, 10):
-    for k in range(1, 10):
+res_acc = [[0] * (max_k // 2 + max_k % 2) for i in range(max_folds)]
+res_f1 = [[0] * (max_k // 2 + max_k % 2) for i in range(max_folds)]
+res_sum = [[0] * (max_k // 2 + max_k % 2) for i in range(max_folds)]
+res_recall = [[0] * (max_k // 2 + max_k % 2) for i in range(max_folds)]
+res_precision = [[0] * (max_k // 2 + max_k % 2) for i in range(max_folds)]
+
+for folds in range(2, max_folds):
+    for k in range(1, max_k, 2):
         #print()
         #print("Folds: " + str(folds))
         #print("K: " + str(k))
@@ -51,11 +53,11 @@ for folds in range(2, 10):
         #print("F1: " + str(f1) + "%")
         #print("Recall: " + str(rec) + "%")
         #print("Precision: " + str(prec) + "%")
-        res_acc[folds][k] = acc
-        res_f1[folds][k] = f1
-        res_recall[folds][k] = rec
-        res_precision[folds][k] = prec
-        res_sum[folds][k] = acc + f1
+        res_acc[folds][k // 2] = acc
+        res_f1[folds][k // 2] = f1
+        res_recall[folds][k // 2] = rec
+        res_precision[folds][k // 2] = prec
+        res_sum[folds][k // 2] = acc + f1
 
 for i in res_acc:
     print(' '.join(["%5.2f" % x for x in i]))
@@ -78,7 +80,8 @@ def get_max(matrix):
                 maxj = j
     return maxval, maxi, maxj
 
-max_sum, i, j = get_max(res_sum)
+max_sum, i, j = get_max(res_acc)
+print("Folds: " + str(i) + ", k: " + str(j * 2 + 1))
 print("Accuracy: " + str(res_acc[i][j]) + " %")
 print("F1: " + str(res_f1[i][j]) + "%")
 print("Recall: " + str(res_recall[i][j]) + "%")

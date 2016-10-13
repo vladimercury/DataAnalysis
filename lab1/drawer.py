@@ -40,8 +40,8 @@ class Drawer:
     def draw_polar_grid():
         lim = 1.0
         import numpy as np
-        for i in np.arange(0, 1.2, 0.1):
-            pl.gca().add_patch(pl.Circle((0, 0), i, color='black', fill=None))
+        #for i in np.arange(0, 1.2, 0.1):
+         #   pl.gca().add_patch(pl.Circle((0, 0), i, color='black', fill=None))
         pl.plot([-lim, lim], [-lim, lim], color='black')
         pl.plot([-lim, lim], [lim, -lim], color='black')
         pl.plot([0, 0], [-lim, lim], color='black')
