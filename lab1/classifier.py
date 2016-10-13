@@ -23,12 +23,18 @@ class Classifier:
 
     @staticmethod
     def classify_knn_gauss(train_data, test_data, k, n_classes):
-        def dist(a, b):
-            return 1 / (a[0]**2 + b[0]**2 - 2 * a[0] * b[0] * math.cos(b[1] - a[1]))
+        def dist_pp(a, b):
+            return 1 / math.fabs(a[0] - b[0])
+
+        def dist_p(a, b):
+            return 1 / math.sqrt(a[0]**2 + b[0]**2 - 2 * a[0] * b[0] * math.cos(b[1] - a[1]))
+
+        def dist(a,b):
+            return 1 / math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
         test_labels = []
         for test_point in test_data:
-            test_dist = [[dist(test_point[0], train_data[i][0]), train_data[i][1]] for i in range(len(train_data))]
+            test_dist = [[dist_pp(test_point[0], train_data[i][0]), train_data[i][1]] for i in range(len(train_data))]
             stat = [0 for i in range(n_classes)]
             for d in sorted(test_dist, reverse=True)[0:k]:
                 stat[d[1]] += d[0]
